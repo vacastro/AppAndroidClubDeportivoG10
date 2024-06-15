@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ClubDeportivo_Grupo10</string>
+    <string name="open_drawer">Abrir menú</string>
+    <string name="close_drawer">Cerrar menú</string>
+    <string name="navigation_drawer_open">Abrir navegación</string>
+    <string name="navigation_drawer_close">Cerrar navegación</string>
 </resources>
