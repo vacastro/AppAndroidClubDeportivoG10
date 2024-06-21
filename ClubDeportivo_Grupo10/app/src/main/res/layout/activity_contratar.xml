@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E5E8FB"
+    tools:context=".ContratarActivity">
+
+    <ImageView
+        android:id="@+id/imageGym"
+        android:layout_width="150dp"
+        android:layout_height="122dp"
+        android:layout_marginBottom="5dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_gym"
+        app:layout_constraintBottom_toTopOf="@+id/titulo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.729" />
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="250dp"
+        android:layout_height="81dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/club_deportivo_grupo_10"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <Button
+        android:id="@+id/asociar"
+        android:layout_width="170dp"
+        android:layout_height="122dp"
+        android:background="@drawable/btn_background"
+        android:drawableTintMode="add"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/asociarme"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.551" />
+
+    <Button
+        android:id="@+id/contratar"
+        android:layout_width="170dp"
+        android:layout_height="122dp"
+        android:layout_marginTop="46dp"
+        android:background="@drawable/btn_background"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/contratar_actividad"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/asociar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

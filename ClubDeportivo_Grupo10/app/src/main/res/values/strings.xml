@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">ClubDeportivo_Grupo10</string>
+    <string name="gift_image_description">Imagen de regalo</string>
+    <string name="gym_image_description">Logo del gimnasio</string>
+    <string name="card_image_description">Imagen de tarjeta</string>
+    <string name="ball_image_description">Imagen de pelota</string>
+    <string name="club_deportivo_grupo_10">Club Deportivo Grupo 10</string>
+    <string name="accede_a_muchos_beneficios_de_nuestro_club">Accede a muchos beneficios de nuestro club</string>
+    <string name="olvidaste_tu_contrase_a">¿Olvidaste tu contraseña?</string>
+    <string name="recordarme">Recordarme</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="ingrese_su_contrase_a">Ingrese su contraseña</string>
+    <string name="ingrese_su_email">Ingrese su email</string>
+    <string name="gestiona_tus_pagos_y_suscripciones">Gestiona tus pagos y suscripciones</string>
+    <string name="visualiza_todas_tus_actividades">Visualiza todas tus actividades</string>
+    <string name="ingrese_su_nombre_completo">Ingrese su nombre completo</string>
+    <string name="n_de_telefono">N° de Telefono sin 0 ni 15</string>
+    <string name="repetir_contrase_a">Repetir contraseña</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="asociarme">Asociarme</string>
+    <string name="contratar_actividad">Contratar actividad</string>
+</resources>

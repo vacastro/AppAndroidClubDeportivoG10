@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E5E8FB"
+        tools:context=".MainActivity">
+
+         <ImageView
+            android:id="@+id/imageGym"
+            android:layout_width="150dp"
+            android:layout_height="122dp"
+            android:layout_marginBottom="5dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_gym"
+            app:layout_constraintBottom_toTopOf="@+id/titulo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.729" />
+
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="250dp"
+            android:layout_height="81dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/club_deportivo_grupo_10"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="32sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <TextView
+            android:id="@+id/txtForgotPass"
+            android:layout_width="190dp"
+            android:layout_height="36dp"
+            android:paddingTop="8sp"
+            android:text="@string/olvidaste_tu_contrase_a"
+            android:textAlignment="textEnd"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/btnIngresar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/checkBoxRememberMe"
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutPass" />
+
+        <CheckBox
+            android:id="@+id/checkBoxRememberMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#7480FF"
+            android:text="@string/recordarme"
+            android:textSize="14sp"
+            android:minHeight="48dp"
+            app:buttonIconTint="#7480FF"
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutPass"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txtForgotPass"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintBottom_toTopOf="@+id/btnIngresar"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutEmail"
+            android:layout_width="347dp"
+            android:layout_height="56dp"
+            app:layout_constraintTop_toBottomOf="@+id/titulo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintBottom_toTopOf="@+id/inputLayoutPass">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="16dp"
+                android:hint="@string/ingrese_su_email" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLayoutPass"
+            android:layout_width="347dp"
+            android:layout_height="56dp"
+            app:layout_constraintBottom_toTopOf="@+id/checkBoxRememberMe"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputLayoutEmail">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="16dp"
+                android:hint="@string/ingrese_su_contrase_a" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnRegistrarse"
+        android:layout_width="164dp"
+        android:layout_height="62dp"
+        android:backgroundTint="#67676B"
+        android:text="@string/registrarse"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnIngresar"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxRememberMe" />
+
+    <Button
+        android:id="@+id/btnIngresar"
+        android:layout_width="164dp"
+        android:layout_height="62dp"
+        android:backgroundTint="#7480FF"
+        android:drawableEnd="@drawable/ic_arrow"
+        android:text="@string/ingresar"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/btnRegistrarse"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxRememberMe" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
