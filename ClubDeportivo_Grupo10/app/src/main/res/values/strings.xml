@@ -20,4 +20,31 @@
     <string name="cancelar">Cancelar</string>
     <string name="asociarme">Asociarme</string>
     <string name="contratar_actividad">Contratar actividad</string>
+    <string name="asociate_hoy_al_club_deportivo">Asociate hoy al club deportivo</string>
+    <string name="disfruta_beneficios">Y disfruta de todas las actividades y beneficios que tiene el club para vos a un solo precio!</string>
+    <string name="_19_999">$ 19.999</string>
+    <string name="final_por_mes">Final por mes</string>
+    <string name="aceptar_t_rminos_y_condiciones">Aceptar términos y condiciones</string>
+    <string name="ver">Ver</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="download">Download</string>
+    <string name="contrata_por_separado">Contrata por separado</string>
+    <string name="y_ahorr_haciendo_las_actividades">Y ahorrá haciendo las actividades que más te gustan sin gastar de más</string>
+    <string name="_5_499_c_u">$ 5.499 c/u</string>
+    <string name="mi_perfil">Mi perfil</string>
+    <string name="cambiar_clave">Cambiar clave</string>
+    <string name="contacto">Contacto</string>
+    <string name="pagar">Pagar</string>
+    <string name="contratar">Contratar</string>
+    <string name="t_rminos_y_condiciones">Términos y condiciones</string>
+    <string name="cerrar_sesi_n">Cerrar sesión</string>
+    <string name="correo">correo@example.com</string>
+    <string name="nombre_de_usuario">Nombre de Usuario</string>
+
+    <string-array name="actividades_array_contratar">
+        <item>Seleccione actividad</item>
+        <item>Fútbol</item>
+        <item>Tenis</item>
+        <item>Yoga</item>
+    </string-array>
 </resources>

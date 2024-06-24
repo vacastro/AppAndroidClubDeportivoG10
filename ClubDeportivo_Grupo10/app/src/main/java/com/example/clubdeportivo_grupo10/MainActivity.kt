@@ -24,5 +24,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, PublicidadActivity::class.java)
             startActivity(intent)
         }
+
+         val btnIngresar = findViewById<Button>(R.id.btnIngresar)
+         btnIngresar.setOnClickListener {
+            val intent = Intent(this, PrincipalActivity::class.java)
+         startActivity(intent)}
+
     }
 }
