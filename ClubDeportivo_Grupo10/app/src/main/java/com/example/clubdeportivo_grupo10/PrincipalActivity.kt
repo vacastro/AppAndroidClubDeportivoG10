@@ -54,10 +54,9 @@ class PrincipalActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_payments -> {
-                    // TODO Logica para "Pagos Realizados"
-
-                    //val intent = Intent(this, PagosRealizadosActivity::class.java)
-                    //startActivity(intent)
+                    // Logica para "Pagos Realizados"
+                    val intent = Intent(this, ListadoCuotasActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.action_pay -> {

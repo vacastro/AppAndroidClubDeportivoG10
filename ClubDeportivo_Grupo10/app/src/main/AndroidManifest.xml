@@ -13,6 +13,9 @@
         android:theme="@style/Theme.ClubDeportivo_Grupo10"
         tools:targetApi="31">
         <activity
+            android:name=".ListadoCuotasActivity"
+            android:exported="false" />
+        <activity
             android:name=".PrincipalActivity"
             android:exported="false" />
         <activity
