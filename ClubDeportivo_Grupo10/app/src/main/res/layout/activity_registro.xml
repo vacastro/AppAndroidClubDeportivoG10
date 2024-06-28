@@ -102,7 +102,8 @@
         android:layout_height="56dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLayoutPhone">
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutPhone"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputPass"
@@ -111,7 +112,8 @@
             android:background="#FFFFFF"
             android:drawableStart="@drawable/ic_lock"
             android:drawablePadding="16dp"
-            android:hint="@string/ingrese_su_contrase_a" />
+            android:hint="@string/ingrese_su_contrase_a"
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -120,7 +122,8 @@
         android:layout_height="56dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLayoutPass">
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutPass"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputRepetPass"
@@ -129,7 +132,8 @@
             android:background="#FFFFFF"
             android:drawableStart="@drawable/ic_lock"
             android:drawablePadding="16dp"
-            android:hint="@string/repetir_contrase_a"/>
+            android:hint="@string/repetir_contrase_a"
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
