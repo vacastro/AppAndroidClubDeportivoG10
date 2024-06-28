@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.clubdeportivo_grupo10.model.Usuario
 
 class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db",null,1 ){
 
@@ -85,28 +86,32 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
     }
 
     // Metodo para obtener la clave dado un email
-    fun obtenerClavePorEmail(email: String): String? {
+    fun obtenerUsuarioPorEmail(email: String): Usuario? {
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT clave FROM Usuarios WHERE email = ?", arrayOf(email))
-        var clave: String? = null
+        val cursor = db.rawQuery("SELECT id, nombre, email, telefono, clave FROM Usuarios WHERE email = ?", arrayOf(email))
+        var usuario: Usuario? = null
 
         if (cursor.moveToFirst()) {
-            clave = cursor.getString(0)
+            val idColumnIndex = cursor.getColumnIndex("id")
+            val nombreColumnIndex = cursor.getColumnIndex("nombre")
+            val telefonoColumnIndex = cursor.getColumnIndex("telefono")
+            val claveColumnIndex = cursor.getColumnIndex("clave")
+
+            if (idColumnIndex != -1 && nombreColumnIndex != -1 && telefonoColumnIndex != -1 && claveColumnIndex != -1) {
+                val id = cursor.getInt(idColumnIndex)
+                val nombre = cursor.getString(nombreColumnIndex)
+                val telefono = cursor.getString(telefonoColumnIndex)
+                val clave = cursor.getString(claveColumnIndex)
+
+                usuario = Usuario(id, nombre, email, telefono, clave)
+            }
         }
         cursor.close()
         db.close()
-        return clave
+
+        return usuario
     }
 
-    // Metodo para verificar si un email existe
-    fun existeEmail(email: String): Boolean {
-        val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT 1 FROM Usuarios WHERE email = ?", arrayOf(email))
-        val exists = cursor.moveToFirst()
-        cursor.close()
-        db.close()
-        return exists
-    }
 
 
 }

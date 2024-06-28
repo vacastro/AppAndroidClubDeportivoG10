@@ -13,6 +13,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
+import com.example.clubdeportivo_grupo10.model.Usuario
+import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,9 +23,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var emailEditText:EditText
     private lateinit var claveEditText: EditText
     private lateinit var btnIngresar: Button
+    private var usuario:Usuario? = null
 
 
-     override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -48,16 +51,18 @@ class MainActivity : AppCompatActivity() {
              val email= emailEditText.text.toString()
              val clave = claveEditText.text.toString()
 
-             val chequearEmail = clubDeportivo.existeEmail(email)
 
-             if(chequearEmail != true){
+             usuario = clubDeportivo.obtenerUsuarioPorEmail(email)
+             if(usuario == null){
                  Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
              }else{
-                 val claveDB = clubDeportivo.obtenerClavePorEmail(email)
+
+                 val claveDB = usuario!!.clave
 
                  if(clave.equals(claveDB)){
 
                      val intent = Intent(this, PrincipalActivity::class.java)
+                     intent.putExtra("userData", usuario as Serializable)
                      startActivity(intent)
                  } else{
                      Toast.makeText(this, "Invalid login", Toast.LENGTH_SHORT).show();

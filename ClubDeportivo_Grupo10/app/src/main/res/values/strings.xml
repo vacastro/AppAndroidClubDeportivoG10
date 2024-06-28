@@ -40,6 +40,8 @@
     <string name="cerrar_sesi_n">Cerrar sesión</string>
     <string name="correo">correo@example.com</string>
     <string name="nombre_de_usuario">Nombre de Usuario</string>
+    <string name="pagos_realizados">Pagos realizados</string>
+    <string name="credencial">Credencial</string>
 
     <string-array name="actividades_array_contratar">
         <item>Seleccione actividad</item>
