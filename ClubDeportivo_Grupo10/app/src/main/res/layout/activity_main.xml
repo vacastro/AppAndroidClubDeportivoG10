@@ -8,7 +8,8 @@
         android:background="#E5E8FB"
         tools:context=".MainActivity">
 
-         <ImageView
+
+    <ImageView
             android:id="@+id/imageGym"
             android:layout_width="150dp"
             android:layout_height="122dp"
@@ -89,7 +90,17 @@
             android:hint="@string/ingrese_su_email" />
     </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
+    <TextView
+        android:id="@+id/emailError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Campo requerido"
+        android:textColor="#EF1212"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/inputLayoutEmail"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutEmail"/>
+
+    <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputLayoutPass"
             android:layout_width="347dp"
             android:layout_height="56dp"
@@ -107,6 +118,16 @@
                 android:drawablePadding="16dp"
                 android:hint="@string/ingrese_su_contrase_a" />
         </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/passError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Campo requerido"
+        android:textColor="#EF1212"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/inputLayoutPass"
+        app:layout_constraintTop_toBottomOf="@+id/inputLayoutPass"/>
 
     <Button
         android:id="@+id/btnRegistrarse"
