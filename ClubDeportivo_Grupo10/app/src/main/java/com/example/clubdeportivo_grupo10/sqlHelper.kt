@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.clubdeportivo_grupo10.model.Contrato
+import com.example.clubdeportivo_grupo10.model.Pagos
 import com.example.clubdeportivo_grupo10.model.Usuario
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -140,6 +142,47 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
         val result = db.insert("Pagos", null, values)
         db.close()
         return result
+    }
+
+
+    fun obtenerContratoPorUsuario(usuarioId: Int): Contrato? {
+        val db = this.readableDatabase
+        var contrato: Contrato? = null
+        val cursor = db.rawQuery("SELECT * FROM Contratos WHERE usuario = ?", arrayOf(usuarioId.toString()))
+
+        if (cursor.moveToFirst()) {
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+            val usuario = cursor.getInt(cursor.getColumnIndexOrThrow("usuario"))
+            val actividad = cursor.getString(cursor.getColumnIndexOrThrow("actividad"))
+            val fechaAlta = cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
+
+            contrato = Contrato(id, usuario, actividad, fechaAlta)
+        }
+        cursor.close()
+        db.close()
+        return contrato
+    }
+
+    fun obtenerPagosPorUsuario(usuarioId: Int): List<Pagos> {
+        val db = this.readableDatabase
+        val pagos = mutableListOf<Pagos>()
+        val cursor = db.rawQuery("SELECT * FROM Pagos WHERE usuario = ?", arrayOf(usuarioId.toString()))
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                val usuario = cursor.getInt(cursor.getColumnIndexOrThrow("usuario"))
+                val fechaVencimiento = cursor.getString(cursor.getColumnIndexOrThrow("fecha_vencimiento"))
+                val fechaPago = cursor.getString(cursor.getColumnIndexOrThrow("fecha_pago"))
+                val importe = cursor.getDouble(cursor.getColumnIndexOrThrow("importe"))
+
+                val pago = Pagos(id, usuario, fechaVencimiento, fechaPago, importe)
+                pagos.add(pago)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return pagos
     }
 
 
