@@ -42,10 +42,14 @@
     <string name="nombre_de_usuario">Nombre de Usuario</string>
     <string name="pagos_realizados">Pagos realizados</string>
     <string name="credencial">Credencial</string>
+    <string name="pagar_ahora">Pagar ahora</string>
+    <string name="pendiente_de_pago">Pendiente de pago</string>
+    <string name="description">Description</string>
+    <string name="title">Title</string>
 
     <string-array name="actividades_array_contratar">
         <item>Seleccione actividad</item>
-        <item>Fútbol</item>
+        <item>Futbol</item>
         <item>Tenis</item>
         <item>Yoga</item>
     </string-array>

@@ -4,8 +4,13 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import com.example.clubdeportivo_grupo10.model.Contrato
 import com.example.clubdeportivo_grupo10.model.Pagos
 import com.example.clubdeportivo_grupo10.model.Usuario
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db",null,1 ){
 
@@ -113,25 +118,73 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
         return usuario
     }
 
-    fun obtenerPagosPorUsuario(usuario: Int) :  List<Pagos>{
-        val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT fecha_pago, fecha_vencimiento, importe FROM Pagos WHERE usuario = ?", arrayOf(usuario.toString()))
-        val listaPagos = ArrayList<Pagos>()
-        if (cursor.moveToFirst()){
-            do{
-                val fechaPago = cursor.getString(1)
-                val fechaVencimiento = cursor.getString(0)
-                val importe = cursor.getDouble(2)
-                val pago = Pagos(fechaPago, fechaVencimiento, importe)
-                listaPagos.add(pago)
-
-            } while(cursor.moveToNext())
-
+    fun insertarContrato(usuarioId: Int, actividad: String): Long {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("usuario", usuarioId)
+            put("actividad", actividad)
+            put("fecha_alta", SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()))
         }
+        val result = db.insert("Contratos", null, values)
+        db.close()
 
+        return result
+    }
+
+    fun insertarPago(usuarioId: Int, importe: Double, fechaVencimiento: String): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("usuario", usuarioId)
+            put("fecha_vencimiento", fechaVencimiento)
+            put("fecha_pago", SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()))
+            put("importe", importe)
+        }
+        val result = db.insert("Pagos", null, values)
+        db.close()
+        return result
+    }
+
+
+    fun obtenerContratoPorUsuario(usuarioId: Int): Contrato? {
+        val db = this.readableDatabase
+        var contrato: Contrato? = null
+        val cursor = db.rawQuery("SELECT * FROM Contratos WHERE usuario = ?", arrayOf(usuarioId.toString()))
+
+        if (cursor.moveToFirst()) {
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+            val usuario = cursor.getInt(cursor.getColumnIndexOrThrow("usuario"))
+            val actividad = cursor.getString(cursor.getColumnIndexOrThrow("actividad"))
+            val fechaAlta = cursor.getString(cursor.getColumnIndexOrThrow("fecha_alta"))
+
+            contrato = Contrato(id, usuario, actividad, fechaAlta)
+        }
         cursor.close()
         db.close()
-       return listaPagos
+        return contrato
     }
+
+    fun obtenerPagosPorUsuario(usuarioId: Int): List<Pagos> {
+        val db = this.readableDatabase
+        val pagos = mutableListOf<Pagos>()
+        val cursor = db.rawQuery("SELECT * FROM Pagos WHERE usuario = ?", arrayOf(usuarioId.toString()))
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                val usuario = cursor.getInt(cursor.getColumnIndexOrThrow("usuario"))
+                val fechaVencimiento = cursor.getString(cursor.getColumnIndexOrThrow("fecha_vencimiento"))
+                val fechaPago = cursor.getString(cursor.getColumnIndexOrThrow("fecha_pago"))
+                val importe = cursor.getDouble(cursor.getColumnIndexOrThrow("importe"))
+
+                val pago = Pagos(id, usuario, fechaVencimiento, fechaPago, importe)
+                pagos.add(pago)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return pagos
+    }
+
+
 
 }

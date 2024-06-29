@@ -2,10 +2,11 @@ package com.example.clubdeportivo_grupo10.model
 
 import java.io.Serializable
 
-data class Pagos(
+data class Contrato(
+
     val id: Int,
     val usuario: Int,
-    val fechaVencimiento: String,
-    val fechaPago: String?,
-    val importe: Double
+    val actividad: String,
+    val fechaAlta: String
+
 ): Serializable
