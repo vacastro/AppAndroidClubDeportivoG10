@@ -123,7 +123,7 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
         val values = ContentValues().apply {
             put("usuario", usuarioId)
             put("actividad", actividad)
-            put("fecha_alta", SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()))
+            put("fecha_alta", SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()))
         }
         val result = db.insert("Contratos", null, values)
         db.close()
@@ -136,7 +136,7 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
         val values = ContentValues().apply {
             put("usuario", usuarioId)
             put("fecha_vencimiento", fechaVencimiento)
-            put("fecha_pago", SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()))
+            put("fecha_pago", SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()))
             put("importe", importe)
         }
         val result = db.insert("Pagos", null, values)

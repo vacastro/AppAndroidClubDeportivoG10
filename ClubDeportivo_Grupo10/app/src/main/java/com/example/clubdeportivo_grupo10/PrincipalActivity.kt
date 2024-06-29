@@ -1,5 +1,6 @@
 package com.example.clubdeportivo_grupo10
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Build
@@ -20,7 +21,9 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.clubdeportivo_grupo10.model.Contrato
 import com.example.clubdeportivo_grupo10.model.Usuario
+import java.text.DecimalFormat
 import java.util.Calendar
 import java.util.Locale
 import java.text.SimpleDateFormat
@@ -29,9 +32,14 @@ class PrincipalActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
 
-    private var cardViewAdded: View? = null
+    lateinit var clubDeportivo: sqlHelper
+    private lateinit var sqlHelper: sqlHelper
+
+    private var cardViewPendientePago: View? = null
+    private var cardViewContrato: View? = null
 
     private var usuario:Usuario? = null
+    private var contrato: Contrato? = null
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,14 +47,24 @@ class PrincipalActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_principal)
 
+        clubDeportivo= sqlHelper(this)
+
         usuario = intent.getSerializableExtra("userData") as? Usuario
+
+        contrato = clubDeportivo.obtenerContratoPorUsuario(usuario!!.id)
+
 
         val showCard = intent.getBooleanExtra("showCard", false)
         val actionType = intent.getStringExtra("actionType")
 
 
+
         if (showCard && actionType != null) {
-            addCardView(actionType)
+            addCardPendientePago(actionType)
+        }
+
+        if(!showCard){
+            addCardContrato(contrato!!)
         }
 
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -129,7 +147,7 @@ class PrincipalActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
     }
 
-    private fun addCardView(actionType: String) {
+    private fun addCardPendientePago(actionType: String) {
 
         val cardView = layoutInflater.inflate(R.layout.card_pendiente_pago, null)
 
@@ -157,7 +175,9 @@ class PrincipalActivity : AppCompatActivity() {
 
         val cardContainer = findViewById<FrameLayout>(R.id.cardContainer)
         cardContainer.addView(cardView)
-        cardViewAdded = cardView
+        cardViewPendientePago = cardView
+
+
     }
 
 
@@ -180,7 +200,7 @@ class PrincipalActivity : AppCompatActivity() {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.MONTH, 1)
         calendar.set(Calendar.DAY_OF_MONTH, 10)
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val fechaVencimiento = dateFormat.format(calendar.time)
         textVencimiento.text = fechaVencimiento
 
@@ -200,11 +220,13 @@ class PrincipalActivity : AppCompatActivity() {
             val fechaVencimientoString = fechaVencimiento
 
 
-            val db = sqlHelper(this)
-            db.insertarPago(usuarioId, importeDouble, fechaVencimientoString)
+
+            clubDeportivo.insertarPago(usuarioId, importeDouble, fechaVencimientoString)
 
             val cardContainer = findViewById<FrameLayout>(R.id.cardContainer)
-            cardContainer.removeView(cardViewAdded)
+            cardContainer.removeView(cardViewPendientePago)
+
+            addCardContrato(contrato!!)
 
             dialog.dismiss()
 
@@ -217,6 +239,34 @@ class PrincipalActivity : AppCompatActivity() {
         }
 
         dialog.show()
+    }
+
+
+
+    private fun addCardContrato(contrato: Contrato) {
+        val cardView = layoutInflater.inflate(R.layout.card_contrato, null)
+
+        val textTitulo = cardView.findViewById<TextView>(R.id.textTitulo)
+        val textDescripcion = cardView.findViewById<TextView>(R.id.textDescripcion)
+
+        val buttonCancelar = cardView.findViewById<Button>(R.id.button3)
+
+        if(contrato.actividad.equals("Socio")){
+            textTitulo.text = "Membresía"
+            textDescripcion.text = "$ 19.999"
+        }else{
+            textTitulo.text = contrato.actividad
+            textDescripcion.text = "$ 5.499"
+        }
+
+
+
+        buttonCancelar.setOnClickListener {
+
+        }
+
+        val cardContainer = findViewById<FrameLayout>(R.id.cardContainer)
+        cardContainer.addView(cardView)
     }
 
 }

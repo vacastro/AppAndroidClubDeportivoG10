@@ -37,11 +37,11 @@ class ListadoCuotasActivity : AppCompatActivity() {
     }
 
     // Función de ejemplo para obtener una lista estática de Pagos
-    private fun obtenerPagos(): List<Pagos> {
+   private fun obtenerPagos(): List<Pagos> {
         return listOf(
-            Pagos("2024-06-01", "2024-06-30", 199.99),
-            Pagos("2024-07-01", "2024-07-30", 199.99),
-            Pagos("2024-08-01", "2024-08-30", 199.99)
+            Pagos(1,1,"2024-05-01", "2024-05-30", 199.99),
+            Pagos(1,1,"2024-05-01", "2024-06-30", 199.99),
+            Pagos(1,1,"2024-07-01", "2024-07-30", 199.99)
             // Agrega más pagos según sea necesario
         )
     }
