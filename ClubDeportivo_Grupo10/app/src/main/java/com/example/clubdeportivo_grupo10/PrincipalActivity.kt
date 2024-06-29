@@ -24,6 +24,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.clubdeportivo_grupo10.model.Contrato
 import com.example.clubdeportivo_grupo10.model.Usuario
 import java.text.DecimalFormat
+import java.io.Serializable
 import java.util.Calendar
 import java.util.Locale
 import java.text.SimpleDateFormat
@@ -47,9 +48,12 @@ class PrincipalActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_principal)
 
+
         clubDeportivo= sqlHelper(this)
 
         usuario = intent.getSerializableExtra("userData") as? Usuario
+
+        usuario = intent.getSerializableExtra("userData", Usuario::class.java)
 
         contrato = clubDeportivo.obtenerContratoPorUsuario(usuario!!.id)
 
@@ -92,10 +96,9 @@ class PrincipalActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_payments -> {
-                    // TODO Logica para "Pagos Realizados"
-
-                    //val intent = Intent(this, PagosRealizadosActivity::class.java)
-                    //startActivity(intent)
+                    val intent = Intent(this, ListadoCuotasActivity::class.java)
+                    intent.putExtra("userData", usuario as Serializable)
+                    startActivity(intent)
                     true
                 }
                 R.id.action_pay -> {

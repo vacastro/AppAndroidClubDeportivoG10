@@ -1,20 +1,30 @@
 package com.example.clubdeportivo_grupo10
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.clubdeportivo_grupo10.model.Pagos
+import com.example.clubdeportivo_grupo10.model.Usuario
 
 class ListadoCuotasActivity : AppCompatActivity() {
+    lateinit var clubDeportivo: sqlHelper
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_listado_cuotas)
 
+        val usuario = intent.getSerializableExtra("userData", Usuario::class.java)
+
+        clubDeportivo= sqlHelper(this)
+
         // Supongamos que obtenemos una lista de Pagos (Cuotas Pagadas)
-        val listaPagos = obtenerPagos()
+        val listaPagos = clubDeportivo.obtenerPagosPorUsuario(usuario!!.id)
 
         val linearLayoutCuotas = findViewById<LinearLayout>(R.id.linearLayoutCuotas)
 
@@ -45,4 +55,5 @@ class ListadoCuotasActivity : AppCompatActivity() {
             // Agrega más pagos según sea necesario
         )
     }
+
 }
