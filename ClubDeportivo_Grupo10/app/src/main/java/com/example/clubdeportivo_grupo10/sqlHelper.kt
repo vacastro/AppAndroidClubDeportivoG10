@@ -4,7 +4,11 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.example.clubdeportivo_grupo10.model.Usuario
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db",null,1 ){
 
@@ -110,6 +114,32 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
         db.close()
 
         return usuario
+    }
+
+    fun insertarContrato(usuarioId: Int, actividad: String): Long {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put("usuario", usuarioId)
+            put("actividad", actividad)
+            put("fecha_alta", SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()))
+        }
+        val result = db.insert("Contratos", null, values)
+        db.close()
+
+        return result
+    }
+
+    fun insertarPago(usuarioId: Int, importe: Double, fechaVencimiento: String): Long {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("usuario", usuarioId)
+            put("fecha_vencimiento", fechaVencimiento)
+            put("fecha_pago", SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date()))
+            put("importe", importe)
+        }
+        val result = db.insert("Pagos", null, values)
+        db.close()
+        return result
     }
 
 

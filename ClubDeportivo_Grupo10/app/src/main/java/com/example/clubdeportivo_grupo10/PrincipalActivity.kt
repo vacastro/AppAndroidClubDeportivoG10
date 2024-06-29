@@ -1,9 +1,14 @@
 package com.example.clubdeportivo_grupo10
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.Window
+import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -16,10 +21,17 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.clubdeportivo_grupo10.model.Usuario
+import java.util.Calendar
+import java.util.Locale
+import java.text.SimpleDateFormat
 
 class PrincipalActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+
+    private var cardViewAdded: View? = null
+
+    private var usuario:Usuario? = null
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +39,15 @@ class PrincipalActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_principal)
 
-        val usuario = intent.getSerializableExtra("userData") as? Usuario
+        usuario = intent.getSerializableExtra("userData") as? Usuario
+
+        val showCard = intent.getBooleanExtra("showCard", false)
+        val actionType = intent.getStringExtra("actionType")
+
+
+        if (showCard && actionType != null) {
+            addCardView(actionType)
+        }
 
         drawerLayout = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.navigation_view)
@@ -54,9 +74,10 @@ class PrincipalActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_payments -> {
-                    // Logica para "Pagos Realizados"
-                    val intent = Intent(this, ListadoCuotasActivity::class.java)
-                    startActivity(intent)
+                    // TODO Logica para "Pagos Realizados"
+
+                    //val intent = Intent(this, PagosRealizadosActivity::class.java)
+                    //startActivity(intent)
                     true
                 }
                 R.id.action_pay -> {
@@ -107,4 +128,95 @@ class PrincipalActivity : AppCompatActivity() {
     private fun enableEdgeToEdge() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
     }
+
+    private fun addCardView(actionType: String) {
+
+        val cardView = layoutInflater.inflate(R.layout.card_pendiente_pago, null)
+
+
+        when (actionType) {
+            "asociar" -> {
+                cardView.findViewById<TextView>(R.id.textTitulo).text = "Bienvenido al club deportivo"
+                cardView.findViewById<TextView>(R.id.textDescripcion).text = "¡Ya estás registrado! Completa el pago para poder utilizar todas las actividades del club."
+            }
+            "contratar" -> {
+                cardView.findViewById<TextView>(R.id.textTitulo).text = "Ya estás ahorrando"
+                cardView.findViewById<TextView>(R.id.textDescripcion).text = "Ya estas registrado ! Completa el pago para comenzar a entrenar."
+            }
+            else -> {
+
+                cardView.findViewById<TextView>(R.id.textTitulo).text = "Información"
+                cardView.findViewById<TextView>(R.id.textDescripcion).text = "Completa el pago para continuar."
+            }
+        }
+
+        val pagarButton = cardView.findViewById<Button>(R.id.button3)
+        pagarButton.setOnClickListener {
+            mostrarDialogoPagar(actionType)
+        }
+
+        val cardContainer = findViewById<FrameLayout>(R.id.cardContainer)
+        cardContainer.addView(cardView)
+        cardViewAdded = cardView
+    }
+
+
+    private fun mostrarDialogoPagar(actionType: String) {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_pagar)
+
+        val actividad = intent.getStringExtra("actividad")
+
+        val textImporte = dialog.findViewById<TextView>(R.id.textImporte)
+        val importe = if (actionType == "asociar") {
+            "19.999"
+        } else {
+            "5.499"
+        }
+        textImporte.text = "$ $importe"
+
+        val textVencimiento = dialog.findViewById<TextView>(R.id.textVencimiento)
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, 1)
+        calendar.set(Calendar.DAY_OF_MONTH, 10)
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val fechaVencimiento = dateFormat.format(calendar.time)
+        textVencimiento.text = fechaVencimiento
+
+        val textConcepto = dialog.findViewById<TextView>(R.id.textConcepto)
+        textConcepto.text = if (actionType == "asociar") {
+            "Membresía"
+        } else {
+            actividad
+        }
+
+
+        val buttonPagar = dialog.findViewById<Button>(R.id.button)
+        buttonPagar.setOnClickListener {
+
+            val usuarioId = usuario!!.id
+            val importeDouble = importe.toDouble()
+            val fechaVencimientoString = fechaVencimiento
+
+
+            val db = sqlHelper(this)
+            db.insertarPago(usuarioId, importeDouble, fechaVencimientoString)
+
+            val cardContainer = findViewById<FrameLayout>(R.id.cardContainer)
+            cardContainer.removeView(cardViewAdded)
+
+            dialog.dismiss()
+
+        }
+
+
+        val buttonCancelar = dialog.findViewById<Button>(R.id.button2)
+        buttonCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
 }

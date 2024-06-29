@@ -9,7 +9,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.clubdeportivo_grupo10.model.Usuario
 import com.google.android.material.textfield.TextInputEditText
+import java.io.Serializable
 
 class RegistroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +38,9 @@ class RegistroActivity : AppCompatActivity() {
             if(passIsValid(pass, repeatedPass)) {
                 val db = sqlHelper(this)
                 db.insertarUsuario(name, email, phone, pass)
+                var usuario : Usuario?= db.obtenerUsuarioPorEmail(email)
                 val intent = Intent(this, ContratarActivity::class.java)
+                intent.putExtra("userData", usuario as Serializable)
                 startActivity(intent)
                 finish()
             } else {
