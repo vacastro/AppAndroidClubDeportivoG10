@@ -12,7 +12,12 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db",null,1 ){
+class sqlHelper (context:Context): SQLiteOpenHelper (context, DATABASE_NAME, null, DATABASE_VERSION ){
+
+    companion object {
+        private const val DATABASE_NAME = "clubDeportivo.db"
+        private const val DATABASE_VERSION = 2
+    }
 
     override fun onCreate(db: SQLiteDatabase?) {
         val CREATE_TABLE_USUARIOS = """
@@ -65,9 +70,13 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
         db?.execSQL("INSERT INTO Pagos (usuario, fecha_vencimiento, fecha_pago, importe) VALUES (1, '2024-04-01', '2024-04-05', 19999.0)")
         db?.execSQL("INSERT INTO Pagos (usuario, fecha_vencimiento, fecha_pago, importe) VALUES (1, '2024-05-01', '2024-05-05', 19999.0)")
         db?.execSQL("INSERT INTO Pagos (usuario, fecha_vencimiento, fecha_pago, importe) VALUES (1, '2024-06-01', '2024-06-05', 19999.0)")
-
+        db?.execSQL("INSERT INTO Pagos (usuario, fecha_vencimiento, importe) VALUES (1, '2024-0-01', 19999.0)")
+        db?.execSQL("INSERT INTO Pagos (usuario, fecha_vencimiento, fecha_pago, importe) VALUES (4, '2024-05-01', '2024-05-05', 5499.0)")
+        db?.execSQL("INSERT INTO Pagos (usuario, fecha_vencimiento, importe) VALUES (4, '2024-05-01', 5499.0)")
 
     }
+
+
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
         db?.execSQL("DROP TABLE IF EXISTS Usuarios")
@@ -75,7 +84,6 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
         db?.execSQL("DROP TABLE IF EXISTS Pagos")
         onCreate(db)
     }
-
 
     //Metodo para hacer un registro de usuarios
     fun insertarUsuario(nombre:String, email:String, telefono:String, clave:String){
@@ -166,7 +174,8 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
     fun obtenerPagosPorUsuario(usuarioId: Int): List<Pagos> {
         val db = this.readableDatabase
         val pagos = mutableListOf<Pagos>()
-        val cursor = db.rawQuery("SELECT * FROM Pagos WHERE usuario = ?", arrayOf(usuarioId.toString()))
+
+        val cursor = db.rawQuery("SELECT * FROM Pagos WHERE usuario = ? AND fecha_pago IS NOT NULL AND fecha_pago != ''", arrayOf(usuarioId.toString()))
 
         if (cursor.moveToFirst()) {
             do {
@@ -180,11 +189,59 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
                 pagos.add(pago)
             } while (cursor.moveToNext())
         }
+
         cursor.close()
         db.close()
+
         return pagos
     }
 
+
+    fun obtenerPagosPendientes(usuarioId: Int): List<Pagos> {
+        val db = this.readableDatabase
+        val pagosPendientes = mutableListOf<Pagos>()
+
+        val cursor = db.rawQuery("SELECT * FROM Pagos WHERE usuario = ? AND (fecha_pago IS NULL OR fecha_pago = '')", arrayOf(usuarioId.toString()))
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+                val usuario = cursor.getInt(cursor.getColumnIndexOrThrow("usuario"))
+                val fechaVencimiento = cursor.getString(cursor.getColumnIndexOrThrow("fecha_vencimiento"))
+                val fechaPago = cursor.getString(cursor.getColumnIndexOrThrow("fecha_pago"))
+                val importe = cursor.getDouble(cursor.getColumnIndexOrThrow("importe"))
+
+                val pago = Pagos(id, usuario, fechaVencimiento, fechaPago, importe)
+                pagosPendientes.add(pago)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+
+        return pagosPendientes
+    }
+
+
+    fun actualizarPagos(pagos: List<Pagos>) {
+        val db = writableDatabase
+        val fechaPagoActual = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        db.beginTransaction()
+        try {
+            pagos.forEach { pago ->
+                val values = ContentValues().apply {
+                    put("fecha_pago", fechaPagoActual)
+                }
+                db.update("Pagos", values, "id = ?", arrayOf(pago.id.toString()))
+            }
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+
+        db.close()
+    }
 
 
 }

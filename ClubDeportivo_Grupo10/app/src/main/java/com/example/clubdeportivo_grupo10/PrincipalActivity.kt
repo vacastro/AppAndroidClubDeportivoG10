@@ -11,6 +11,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -28,6 +29,7 @@ import java.io.Serializable
 import java.util.Calendar
 import java.util.Locale
 import java.text.SimpleDateFormat
+import java.util.Date
 
 class PrincipalActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -102,7 +104,14 @@ class PrincipalActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_pay -> {
-                    // TODO Logica para "Pagar"
+                    val usuarioId = usuario!!.id
+                    val (totalImporte, fechaVencimiento) = obtenerTotalPagosPendientes(usuarioId)
+                    if (totalImporte > 0) {
+                        mostrarDialogoPagarPendiente(totalImporte, usuarioId, fechaVencimiento)
+                    } else {
+                        // Mostrar un mensaje diciendo que no hay pagos pendientes
+                        Toast.makeText(this, "No hay pagos pendientes", Toast.LENGTH_SHORT).show()
+                    }
                     true
                 }
                 R.id.action_hire -> {
@@ -271,5 +280,47 @@ class PrincipalActivity : AppCompatActivity() {
         val cardContainer = findViewById<FrameLayout>(R.id.cardContainer)
         cardContainer.addView(cardView)
     }
+
+
+    fun obtenerTotalPagosPendientes(usuarioId: Int): Pair<Double, String?> {
+        val pagosPendientes = clubDeportivo.obtenerPagosPendientes(usuarioId)
+        val totalImporte = pagosPendientes.sumOf { it.importe }
+        val fechaVencimiento = pagosPendientes.firstOrNull()?.fechaVencimiento
+        return Pair(totalImporte, fechaVencimiento)
+    }
+
+    private fun mostrarDialogoPagarPendiente(totalImporte: Double, usuarioId: Int, fechaVencimiento: String?) {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_pagar)
+
+        val textImporte = dialog.findViewById<TextView>(R.id.textImporte)
+        textImporte.text = "$ $totalImporte"
+
+        val textVencimiento = dialog.findViewById<TextView>(R.id.textVencimiento)
+        textVencimiento.text = fechaVencimiento ?: "N/A"
+
+        val textConcepto = dialog.findViewById<TextView>(R.id.textConcepto)
+        textConcepto.text = contrato!!.actividad
+
+        val buttonPagar = dialog.findViewById<Button>(R.id.button)
+        buttonPagar.setOnClickListener {
+
+            val pagosPendientes = clubDeportivo.obtenerPagosPendientes(usuarioId)
+            pagosPendientes.forEach {
+                clubDeportivo.actualizarPagos(pagosPendientes)
+            }
+
+            dialog.dismiss()
+        }
+
+        val buttonCancelar = dialog.findViewById<Button>(R.id.button2)
+        buttonCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
 
 }
