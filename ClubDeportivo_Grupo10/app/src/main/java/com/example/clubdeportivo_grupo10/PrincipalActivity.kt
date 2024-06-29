@@ -21,6 +21,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.clubdeportivo_grupo10.model.Usuario
+import java.io.Serializable
 import java.util.Calendar
 import java.util.Locale
 import java.text.SimpleDateFormat
@@ -39,7 +40,7 @@ class PrincipalActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_principal)
 
-        usuario = intent.getSerializableExtra("userData") as? Usuario
+        usuario = intent.getSerializableExtra("userData", Usuario::class.java)
 
         val showCard = intent.getBooleanExtra("showCard", false)
         val actionType = intent.getStringExtra("actionType")
@@ -74,10 +75,9 @@ class PrincipalActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_payments -> {
-                    // TODO Logica para "Pagos Realizados"
-
-                    //val intent = Intent(this, PagosRealizadosActivity::class.java)
-                    //startActivity(intent)
+                    val intent = Intent(this, ListadoCuotasActivity::class.java)
+                    intent.putExtra("userData", usuario as Serializable)
+                    startActivity(intent)
                     true
                 }
                 R.id.action_pay -> {
