@@ -8,13 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.clubdeportivo_grupo10.model.Pagos
 
 class ListadoCuotasActivity : AppCompatActivity() {
+    lateinit var clubDeportivo: sqlHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_listado_cuotas)
 
+        clubDeportivo= sqlHelper(this)
+
         // Supongamos que obtenemos una lista de Pagos (Cuotas Pagadas)
-        val listaPagos = obtenerPagos()
+        val listaPagos = clubDeportivo.obtenerPagosPorUsuario(1)
 
         val linearLayoutCuotas = findViewById<LinearLayout>(R.id.linearLayoutCuotas)
 
@@ -35,6 +38,8 @@ class ListadoCuotasActivity : AppCompatActivity() {
             linearLayoutCuotas.addView(itemView)
         }
     }
+
+
 
     // Función de ejemplo para obtener una lista estática de Pagos
     private fun obtenerPagos(): List<Pagos> {

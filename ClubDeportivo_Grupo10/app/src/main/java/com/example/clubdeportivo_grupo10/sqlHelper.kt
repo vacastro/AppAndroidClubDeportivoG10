@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.clubdeportivo_grupo10.model.Pagos
 import com.example.clubdeportivo_grupo10.model.Usuario
 
 class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db",null,1 ){
@@ -112,6 +113,25 @@ class sqlHelper (context:Context): SQLiteOpenHelper (context, "clubDeportivo.db"
         return usuario
     }
 
+    fun obtenerPagosPorUsuario(usuario: Int) :  List<Pagos>{
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT fecha_pago, fecha_vencimiento, importe FROM Pagos WHERE usuario = ?", arrayOf(usuario.toString()))
+        val listaPagos = ArrayList<Pagos>()
+        if (cursor.moveToFirst()){
+            do{
+                val fechaPago = cursor.getString(1)
+                val fechaVencimiento = cursor.getString(0)
+                val importe = cursor.getDouble(2)
+                val pago = Pagos(fechaPago, fechaVencimiento, importe)
+                listaPagos.add(pago)
 
+            } while(cursor.moveToNext())
+
+        }
+
+        cursor.close()
+        db.close()
+       return listaPagos
+    }
 
 }
